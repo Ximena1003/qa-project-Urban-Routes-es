@@ -18,6 +18,7 @@ adicionales y confirmación de pedido
 - Selenium WebDriver
 - Pytest
 - Google Chrome + Chromedriver
+- Page Object Model (POM)
 
 ### metodo de instalación
 descargadas por Python packages
@@ -25,6 +26,8 @@ descargadas por Python packages
 #### Estructura del Proyecto
 main.py # Contiene la clase UrbanRoutesPage y las pruebas TestUrbanRoutes
 data.py # Contiene datos de prueba como direcciones, número de teléfono, tarjeta y mensaje
+pages.py # Contiene la clase UrbanRoutesPage con todos los localizadores y acciones
+helpers.py # Contiene las funciones auxiliares 
 README.md # Este archivo, donde de hace la trazabilidad de la ejecución de las pruebas
 
 ##### Descripción del flujo
@@ -38,7 +41,8 @@ quedo (pausa manual de 10 segundos, para ingresar CVV y dar clic en "Agregar").
 - Escribir un mensaje para el conductor.
 - Activar la opción "Manta y pañuelos".
 - Añadir dos helados al pedido.
-- Confirmar la solicitud de el taxi.
+- Buscar conductor
+- Confirmacion de tiempo en que llagara el conductor e informacion del carro
 
 ###### Ejecución de las pruebas (terminal)
 
