@@ -1,16 +1,21 @@
+import json
 import time
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import WebDriverException
 
-
-def wait_and_click(driver, locator, wait):
-    element = wait.until(EC.element_to_be_clickable(locator))
-    driver.execute_script("arguments[0].click();", element)
-
-
-def wait_for_element(driver, locator, wait):
-    return wait.until(EC.presence_of_element_located(locator))
-
-
-def simulate_tab(element):
-    element.send_keys("\t")
-    time.sleep(0.5)
+def retrieve_phone_code(driver) -> str:
+    code = None
+    for _ in range(10):
+        try:
+            logs = [log["message"] for log in driver.get_log('performance')
+                    if log.get("message") and 'api/v1/number?number' in log.get("message")]
+            for log in reversed(logs):
+                message_data = json.loads(log)["message"]
+                body = driver.execute_cdp_cmd('Network.getResponseBody',
+                                              {'requestId': message_data["params"]["requestId"]})
+                code = ''.join([x for x in body['body'] if x.isdigit()])
+        except WebDriverException:
+            time.sleep(1)
+            continue
+        if code:
+            return code
+    raise Exception("No se encontró el código de confirmación telefónica.")
